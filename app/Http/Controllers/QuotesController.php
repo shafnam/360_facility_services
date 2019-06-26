@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Quote;
 use App\QuoteItem;
+use App\QuotePhoto;
 
 class QuotesController extends Controller
 {
@@ -47,25 +48,10 @@ class QuotesController extends Controller
             'sub_total' => 'required|array',
             'grand_total' => 'required',
             'tax' => 'required',
-            'total' => 'required'
+            'total' => 'required',
+            'upload_file' => 'max:999|required'
             //'cover_image' => 'image|nullable|max:1999'
         ]);
-
-        // Handle File Upload
-        // if($request->hasFile('cover_image')){
-        //     // Get filename with the extension
-        //     $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
-        //     // Get just filename
-        //     $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-        //     // Get just ext
-        //     $extension = $request->file('cover_image')->getClientOriginalExtension();
-        //     // Filename to store
-        //     $fileNameToStore= $filename.'_'.time().'.'.$extension;
-        //     // Upload Image
-        //     $path = $request->file('cover_image')->storeAs('public/cover_images', $fileNameToStore);
-        // } else {
-        //     $fileNameToStore = 'noimage.jpg';
-        // }
 
         // Create Quote
         $quote = new Quote;
@@ -79,6 +65,7 @@ class QuotesController extends Controller
         $quote->total = $request->input('total');
         $quote->comment = $request->input('comment');
         $quote->expiry_date = $request->input('expiry_date');
+        $quote->status = '0';
         $quote->save();
 
         // Create Quote Items 
@@ -91,6 +78,32 @@ class QuotesController extends Controller
             $QuoteItem->sub_total = $request->sub_total[$i];
             //Save one to many relationship
             $quote->quote_items()->save($QuoteItem); 
+        }
+
+        // Handle File Upload
+        if($request->hasFile('upload_file')){
+            foreach($request->file('upload_file') as $file_upload){
+                
+                // Get File name with the extension
+                $filenameWithExt = $file_upload->getClientOriginalName();
+                // Get just filename
+                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                // Get just ext
+                $extension = $file_upload->getClientOriginalExtension();
+                // Filename to store
+                $fileNameToStore = $filename.'-'.time().'.'.$extension;
+                $path =  public_path().'/quote_images/';
+                // Upload Image
+                $file_upload->move($path, $fileNameToStore);
+
+                // Create Quote Images 
+                $quotePhoto = new QuotePhoto();
+                $quotePhoto->name = $fileNameToStore;
+                //Save one to many relationship
+                $quote->quote_items()->save($quotePhoto); 
+            }
+        } else {
+            $fileNameToStore = 'noimage.jpg';
         }
 
         return redirect('/')->with('success', 'Quote Drafted');

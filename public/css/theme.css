@@ -307,7 +307,7 @@ section {
 }
 
 .main-content {
-    padding-top: 116px;
+    padding-top: 60px;
     min-height: 100vh;
 }
 
@@ -14643,3 +14643,18 @@ section {
 .vue-lists ul, .vue-lists ol {
     padding-left: 30px;
 }
+
+.draft-quote-form input[type=file]{
+    display: inline;
+}
+
+.draft-quote-form #image_preview{
+    border: 1px solid #efefef;
+    padding: 10px;
+}
+
+.draft-quote-form #image_preview img{
+    width: 200px;
+    padding: 5px;
+}
+

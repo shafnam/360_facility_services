@@ -24,7 +24,8 @@ class CreateQuotesTable extends Migration
             $table->decimal('tax', 10, 2);
             $table->decimal('total', 10, 2);
             $table->mediumText('comment');
-            $table->date('expiry_date');        
+            $table->date('expiry_date'); 
+            $table->tinyInteger('status');       
             $table->timestamps();
         });
     }

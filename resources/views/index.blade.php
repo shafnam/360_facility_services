@@ -47,7 +47,8 @@
                         <!-- Messages -->
 
                         <div class="col-md-6">
-                            <h3 class="m-2 text-center text-md-left">Quote No: 157896</h3>
+                            <?php $qn = 157896; ?>
+                            <h3 class="m-2 text-center text-md-left">Quote No: <?php echo $qn; ?></h3>
                         </div>
 
                         <div class="col-md-6 d-none d-sm-block">
@@ -240,6 +241,18 @@
                                     <label for="expiry_date" class="control-label mb-1">This quote expires on</label>
                                     <input id="expiry_date" name="expiry_date" type="text" class="form-control expiry_date" value="<?php echo $twoWeeksFromNow; ?>" readonly>
                                 </div> 
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="upload_file" class="control-label mb-1">Upload Images</label>
+                                    <input type="file" class="form-control" id="upload_file" name="upload_file[]" placeholder="upload images here" multiple required>
+                                </div> 
+                            </div>
+                            <div class="col-md-12">
+                                <div id="image_preview"></div>
                             </div>
                         </div>
 

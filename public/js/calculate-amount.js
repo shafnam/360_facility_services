@@ -38,3 +38,14 @@ $(function () {
         });
     });
 });
+
+$(function ($) {
+    $("#upload_file").change(function(){
+        $('#image_preview').html("");
+        var total_file=document.getElementById("upload_file").files.length;
+        for(var i=0;i<total_file;i++)
+        {
+            $('#image_preview').append("<img src='"+URL.createObjectURL(event.target.files[i])+"'>");
+        }
+    });
+});
