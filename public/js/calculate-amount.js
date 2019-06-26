@@ -4,12 +4,14 @@ $(function () {
 
     $tblrows.each(function (index) {
         var $tblrow = $(this);
+        // alert($tblrow);
 
-        $tblrow.find('.calc').on('keyup', function () {
-
-            var qty = $tblrow.find("[name=qty]").val();
-            var price = $tblrow.find("[name=unit_price]").val();
+        $tblrow.find('.calc').on('keyup change', function () {
+            
+            var qty = $tblrow.find(".qty").val();
+            var price = $tblrow.find(".unit_price").val();
             var subTotal = parseInt(qty, 10) * parseFloat(price);
+            // var price = $tblrow.find("[name=unit_price]").val();
 
             if (!isNaN(subTotal)) {
 

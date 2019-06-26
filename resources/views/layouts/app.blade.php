@@ -12,7 +12,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Title Page-->
-    <title>360<sup>o</sup></title>
+    <title>360 Facilities Quotes</title>
 
     <!-- Fontfaces CSS-->
     <link href="{{ asset('css/font-face.css') }}" rel="stylesheet" media="all">
@@ -173,7 +173,7 @@
     <!-- Main JS-->
     <script src="{{ asset('js/main.js') }}"></script>
     <!-- Calculate JS-->
-    <script src="{{ asset('js/calulate-amount.js') }}"></script>
+    <script src="{{ asset('js/calculate-amount.js') }}"></script>
 
 </body>
 </html>
