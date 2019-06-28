@@ -1681,3 +1681,7 @@ $(document).ready(function() {
     ]
   });
 });
+
+$(document).ready(function() {  
+  $("#c_contact").inputmask({"mask": "(999) 999-9999"});
+});

@@ -19,7 +19,10 @@ class CreateQuotesTable extends Migration
             $table->string('c_name');
             $table->string('c_email');
             $table->string('c_contact');
-            $table->mediumText('job_address');
+            $table->mediumText('address_1');
+            $table->mediumText('address_2');
+            $table->string('city');
+            $table->integer('post_code');
             $table->decimal('grand_total', 10, 2);
             $table->decimal('tax', 10, 2);
             $table->decimal('total', 10, 2);

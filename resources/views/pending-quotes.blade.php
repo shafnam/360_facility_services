@@ -113,7 +113,10 @@
                                     {{ $quote->c_email }}
                                     </td>
                                     <td data-label="Job Address">
-                                    {{ $quote->job_address }}
+                                    {{ $quote->address_1 }}
+                                    {{ $quote->address_2 }},
+                                    {{ $quote->city }}
+                                    {{ $quote->post_code }}
                                     </td>
                                     <td data-label="Expires On">
                                     {{ $quote->expiry_date }}

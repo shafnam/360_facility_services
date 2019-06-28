@@ -51,7 +51,7 @@
                         </div>
 
                         <div class="col-md-6 d-none d-sm-block">
-                            <img class="pull-right" src="/images/icon/logo.png" alt="Cool Admin">
+                            <img class="pull-right" src="{{ URL::asset('/images/360-logo.png') }}" alt="360-app">
                         </div>
 
                     </div>
@@ -87,19 +87,32 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12">
+                                <label for="address" class="control-label mb-1">Job Address</label>                                    
+                            </div>
+                            <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="job_address" class="control-label mb-1">Job Address</label>
-                                    <textarea name="job_address" id="job_address" rows="3" placeholder="Address..." class="form-control job_address" readonly>{{ $quote->job_address }}</textarea>
+                                    <textarea name="address_1" id="address_1" rows="1" placeholder="Address line 1" class="form-control address_1">{{ $quote->address_1 }}</textarea>
                                 </div> 
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <textarea name="address_2" id="address_2" rows="1" placeholder="Address line 2" class="form-control address_2">{{ $quote->address_2 }}</textarea>
+                                </div>  
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <input name="city" type="text" class="form-control city" value="{{ $quote->city }}">
+                                </div> 
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                <input name="post_code" type="text" class="form-control post_code" value="{{ $quote->post_code }}">
+                                </div>  
                             </div>
                         </div>
 
-                        <div class="card-title mt-4 mb-5">
-                            <h3 class="text-center title-2">Pay Invoice</h3>
-                        </div>
-
                         <!-- Table-->                        
-                        <table id="orderTable" class="mb-5">
+                        <table id="orderTable" class="my-5">
                             <thead>
                                 <tr>
                                     <th scope="col">Item</th>
@@ -113,10 +126,10 @@
                                 @foreach ($quote_items as $qi)   
                                 <tr>
                                     <td data-label="Item">
-                                        <input name="item_name[]" type="text" class="form-control item_name" value="{{ $qi->name }}" readonly readonly>
+                                        <input name="item_name[]" type="text" class="form-control item_name" value="{{ $qi->name }}" readonly>
                                     </td>
                                     <td data-label="Description">
-                                        <textarea name="description[]" rows="3" placeholder="..." class="form-control description" value="{{ $qi->description }}" readonly></textarea>
+                                        <textarea name="description[]" rows="3" class="form-control description" readonly>{{ $qi->description }}</textarea>
                                     </td>
                                     <td data-label="Qty">
                                         <input name="qty[]" type="number" class="form-control qty calc" value="1" min="1" value="{{ $qi->qty }}" readonly>
@@ -157,21 +170,6 @@
                         <!-- Table-->
 
                         <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="comment" class="control-label mb-1">Comment</label>
-                                    <textarea name="comment" id="comment" rows="3" placeholder="" class="form-control comment" readonly>{{ $quote->comment }}</textarea>
-                                </div> 
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="expiry_date" class="control-label mb-1">This quote expires on</label>
-                                    <input id="expiry_date" name="expiry_date" type="text" class="form-control expiry_date" value="{{ $quote->expiry_date }}" readonly>
-                                </div> 
-                            </div>
-                        </div>
-
-                        <div class="row">
                             <!-- <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="upload_file" class="control-label mb-1">Upload Images</label>
@@ -179,11 +177,33 @@
                                 </div> 
                             </div> -->
                             <div class="col-md-12">
-                                <div id="image_preview">
-                                @foreach ($quote_pictures as $qp)     
-                                    <img src="{{ URL::asset('/quote_images/'. $qp->name ) }}">
-                                @endforeach                                         
+                                <div class="form-group">
+                                    <label for="upload_file" class="control-label mb-1">Images</label>                                    
+                                    <div id="image_preview">
+                                    @foreach ($quote_pictures as $qp)     
+                                        <img src="{{ URL::asset('/quote_images/'. $qp->name ) }}">
+                                    @endforeach                                         
+                                    </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="comment" class="control-label mb-1">Note </label>
+                                    <textarea name="comment" id="comment" rows="3" placeholder="" class="form-control comment" readonly>{{ $quote->comment }}</textarea>
+                                </div> 
+                            </div>
+                            <div class="col-md-12">
+                                <?php 
+                                    $today = date("Y-m-d"); 
+                                    $twoWeeksFromNow = date( "Y-m-d", strtotime( "$today +2 week" ) );
+                                ?>
+                                <div class="form-group">
+                                    <label for="expiry_date" class="control-label mb-1">This quote expires on</label>
+                                    <input id="expiry_date" name="expiry_date" type="text" class="form-control expiry_date" value="<?php echo $twoWeeksFromNow?>" readonly>
+                                </div> 
                             </div>
                         </div>
 

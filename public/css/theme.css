@@ -14649,7 +14649,7 @@ section {
 }
 
 .draft-quote-form #image_preview, .edit-quote-form #image_preview{
-    border: 1px solid #efefef;
+    border: 1px solid #fff;
     padding: 10px;
 }
 

@@ -31,6 +31,8 @@
     <link href="{{ asset('vendor/slick/slick.css') }}" rel="stylesheet" media="all">
     <link href="{{ asset('vendor/select2/select2.min.css') }}" rel="stylesheet" media="all">
     <link href="{{ asset('vendor/perfect-scrollbar/perfect-scrollbar.css') }}" rel="stylesheet" media="all">
+    <link href="{{ asset('vendor/input-mask/css/inputmask.css') }}" rel="stylesheet" media="all">
+    
 
     <!-- Main CSS-->
     <link href="{{ asset('css/theme.css') }}" rel="stylesheet" media="all">
@@ -41,23 +43,6 @@
     <link href="{{ asset('https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" media="all">
 
 </head>
-<!-- <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- CSRF Token --
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>{{ config('app.name', 'Laravel') }}</title>
-
-    <!-- Styles --
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
-    <!-- Custom Styles --
-    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
-
-</head> -->
 <body class="animsition">
     <div class="page-wrapper">
 
@@ -66,8 +51,8 @@
             <div class="header-mobile__bar">
                 <div class="container-fluid">
                     <div class="header-mobile-inner">
-                        <a class="logo" href="index.html">
-                            <img src="/images/icon/logo.png" alt="CoolAdmin" />
+                        <a class="logo" href="/">
+                            <img src="{{ URL::asset('/images/360-logo.png') }}" alt="360-app">
                         </a>
                         <button class="hamburger hamburger--slider" type="button">
                             <span class="hamburger-box">
@@ -82,12 +67,12 @@
                     <ul class="navbar-mobile__list list-unstyled">
                         <li class="{{ Request::is('/') ? 'active' : '' }}">
                             <a href="{{ route('index') }}">
-                                <i class="fas fa-table"></i>Draft a Quote
+                                <i class="fas fa-copy"></i>Pending Quotes
                             </a>
                         </li>
-                        <li class="{{ Request::is('pendingQuotes') ? 'active' : '' }}">
-                            <a href="{{ route('pendingQuotes') }}">
-                                <i class="fas fa-copy"></i>Pending Quotes
+                        <li class="{{ Request::is('add-quote') ? 'active' : '' }}">
+                            <a href="{{ route('addQuote') }}">
+                                <i class="fas fa-table"></i>Draft a Quote
                             </a>
                         </li>
                         <li>
@@ -104,8 +89,8 @@
         <!-- MENU SIDEBAR-->
         <aside class="menu-sidebar d-none d-lg-block">
             <div class="logo">
-                <a href="#">
-                    <img src="/images/icon/logo.png" alt="Cool Admin" />
+                <a href="/">
+                    <img src="{{ URL::asset('/images/360-logo.png') }}" alt="360-app">
                 </a>
             </div>
             <div class="menu-sidebar__content js-scrollbar1">
@@ -113,12 +98,12 @@
                     <ul class="list-unstyled navbar__list">
                         <li class="{{ Request::is('/') ? 'active' : '' }}">
                             <a href="{{ route('index') }}">
-                                <i class="fas fa-table"></i>Draft a Quote
+                                <i class="fas fa-copy"></i>Pending Quotes
                             </a>
                         </li>
-                        <li class="{{ Request::is('pending-quotes') ? 'active' : '' }}">
-                            <a href="{{ route('pendingQuotes') }}">
-                                <i class="fas fa-copy"></i>Pending Quotes
+                        <li class="{{ Request::is('add-quote') ? 'active' : '' }}">
+                            <a href="{{ route('addQuote') }}">
+                                <i class="fas fa-table"></i>Draft a Quote
                             </a>
                         </li>
                         <li>
@@ -173,6 +158,7 @@
     <script src="{{ asset('vendor/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
     <script src="{{ asset('vendor/chartjs/Chart.bundle.min.js') }}"></script>
     <script src="{{ asset('vendor/select2/select2.min.js') }}"></script>
+    <script src="{{ asset('vendor/input-mask/js/jquery.inputmask.js') }}"></script>
     <!-- Main JS-->
     <script src="{{ asset('js/main.js') }}"></script>
     <!-- Calculate JS-->

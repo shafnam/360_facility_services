@@ -16,14 +16,14 @@ class QuotesController extends Controller
      */
     public function index()
     {
-        return view('index');
-    }
-
-    public function pendingQuotes()
-    {
+        //return view('pending-quotes');
         $quotes = Quote::orderBy('quote_number','desc')->where('status','0')->get();
         return view('pending-quotes')->with('quotes', $quotes);
-        //return view('pending-quotes');
+    }
+
+    public function addQuote()
+    {
+        return view('add-quote');
     }
 
     /**
@@ -48,15 +48,32 @@ class QuotesController extends Controller
             'c_name' => 'required',
             'c_email' => 'required',
             'c_contact' => 'required|regex:/(0)[0-9]{9}/',
-            'job_address' => 'required',
+            'address_1' => 'required',
+            'city' => 'required',
+            'post_code' => 'required',
             'expiry_date' => 'required',
-            'description' => 'required|array',
-            'unit_price' => 'required|array',
-            'sub_total' => 'required|array',
+
+            'description.0' => 'required',
+            'description.1' => 'required',
+            'description.2' => 'required',
+            'description.3' => 'required',
+
+            'unit_price.0' => 'required',
+            'unit_price.1' => 'required',
+            'unit_price.2' => 'required',
+            'unit_price.3' => 'required',
+
+            'sub_total.0' => 'required',
+            'sub_total.1' => 'required',
+            'sub_total.2' => 'required',
+            'sub_total.3' => 'required',
+            //'description' => 'required|array',
+            //'unit_price' => 'required|array',
+            //'sub_total' => 'required|array',
             'grand_total' => 'required',
             'tax' => 'required',
             'total' => 'required',
-            'upload_file' => 'max:999|required'
+            'upload_file' => 'max:999|nullable'
             //'cover_image' => 'image|nullable|max:1999'
         ]);
 
@@ -66,12 +83,15 @@ class QuotesController extends Controller
         $quote->c_name = $request->input('c_name');
         $quote->c_email = $request->input('c_email');
         $quote->c_contact = $request->input('c_contact');
-        $quote->job_address = $request->input('job_address');
+        $quote->address_1 = $request->input('address_1');
+        $quote->address_2 = $request->input('address_2');
+        $quote->city = $request->input('city');
+        $quote->post_code = $request->input('post_code');
         $quote->grand_total = $request->input('grand_total');
         $quote->tax = $request->input('tax');
         $quote->total = $request->input('total');
         $quote->comment = $request->input('comment');
-        $quote->expiry_date = $request->input('expiry_date');
+        $quote->draft_date = $request->input('draft_date');
         $quote->status = '0';
         $quote->save();
 
