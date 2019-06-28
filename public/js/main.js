@@ -1668,3 +1668,16 @@
   }
 
 })(jQuery);
+
+$(document).ready(function() {
+  $('#pending').DataTable({
+    "columns": [
+      null,
+      null,
+      null,
+      { "width": "25%" },
+      null,
+      { "width": "10%" }
+    ]
+  });
+});

@@ -16,7 +16,14 @@ class QuotesController extends Controller
      */
     public function index()
     {
-        //
+        return view('index');
+    }
+
+    public function pendingQuotes()
+    {
+        $quotes = Quote::orderBy('quote_number','desc')->where('status','0')->get();
+        return view('pending-quotes')->with('quotes', $quotes);
+        //return view('pending-quotes');
     }
 
     /**
@@ -128,7 +135,21 @@ class QuotesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $quote = Quote::find($id);
+        $quote_items =  QuoteItem::where('quote_id', $id)->get();
+        $quote_pictures =  QuotePhoto::where('quote_id', $id)->get();
+        
+        //Check if quote exists before deleting
+        if (!isset($quote)){
+            return redirect('/pending-quotes')->with('error', 'No Quote Found');
+        }
+
+        // Check for correct user
+        // if(auth()->user()->id !==$post->user_id){
+        //     return redirect('/edit-quote')->with('error', 'Unauthorized Page');
+        // }
+
+        return view('edit-quote', compact('quote', 'quote_items', 'quote_pictures'));
     }
 
     /**
@@ -140,7 +161,19 @@ class QuotesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // Update Quote
+        $quote = Quote::find($id);
+
+        if($request->input('submitbutton') == '1'){
+            $quote->status = '1';
+            $quote->save();
+            return redirect('/pending-quotes')->with('success', 'Quote approved');
+        }
+        else if($request->input('submitbutton') == '2'){
+            $quote->status = '2';
+            $quote->save();
+            return redirect('/pending-quotes')->with('success', 'Quote rejected');
+        }
     }
 
     /**

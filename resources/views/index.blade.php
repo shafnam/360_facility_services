@@ -17,7 +17,7 @@
             
             <div class="card">
 
-                <div class="card-header py-5">
+                <div class="card-header py-2">
                     <div class="row">
                     
                         <!-- Messages -->

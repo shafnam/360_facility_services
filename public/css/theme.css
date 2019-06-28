@@ -14644,16 +14644,16 @@ section {
     padding-left: 30px;
 }
 
-.draft-quote-form input[type=file]{
+.draft-quote-form input[type=file], .edit-quote-form input[type=file]{
     display: inline;
 }
 
-.draft-quote-form #image_preview{
+.draft-quote-form #image_preview, .edit-quote-form #image_preview{
     border: 1px solid #efefef;
     padding: 10px;
 }
 
-.draft-quote-form #image_preview img{
+.draft-quote-form #image_preview img, .edit-quote-form #image_preview img{
     width: 200px;
     padding: 5px;
 }

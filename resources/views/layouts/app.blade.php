@@ -37,6 +37,9 @@
     <!-- Responsive Table-->
     <link href="{{ asset('css/table.css') }}" rel="stylesheet" media="all">
 
+    <link href="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css') }}" rel="stylesheet" media="all">
+    <link href="{{ asset('https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" media="all">
+
 </head>
 <!-- <head>
     <meta charset="utf-8">
@@ -64,7 +67,7 @@
                 <div class="container-fluid">
                     <div class="header-mobile-inner">
                         <a class="logo" href="index.html">
-                            <img src="images/icon/logo.png" alt="CoolAdmin" />
+                            <img src="/images/icon/logo.png" alt="CoolAdmin" />
                         </a>
                         <button class="hamburger hamburger--slider" type="button">
                             <span class="hamburger-box">
@@ -77,18 +80,18 @@
             <nav class="navbar-mobile">
                 <div class="container-fluid">
                     <ul class="navbar-mobile__list list-unstyled">
-                        <li class="active">
-                            <a href="quote-draft.html">
+                        <li class="{{ Request::is('/') ? 'active' : '' }}">
+                            <a href="{{ route('index') }}">
                                 <i class="fas fa-table"></i>Draft a Quote
                             </a>
                         </li>
-                        <li>
-                            <a href="quote-pending.html">
+                        <li class="{{ Request::is('pendingQuotes') ? 'active' : '' }}">
+                            <a href="{{ route('pendingQuotes') }}">
                                 <i class="fas fa-copy"></i>Pending Quotes
                             </a>
                         </li>
                         <li>
-                            <a href="quote-approved.html">
+                            <a href="{{ route('index') }}">
                                 <i class="far fa-check-square"></i>Approved Quotes
                             </a>
                         </li>
@@ -102,24 +105,24 @@
         <aside class="menu-sidebar d-none d-lg-block">
             <div class="logo">
                 <a href="#">
-                    <img src="images/icon/logo.png" alt="Cool Admin" />
+                    <img src="/images/icon/logo.png" alt="Cool Admin" />
                 </a>
             </div>
             <div class="menu-sidebar__content js-scrollbar1">
                 <nav class="navbar-sidebar">
                     <ul class="list-unstyled navbar__list">
-                        <li class="active">
-                            <a href="add-quote.html">
+                        <li class="{{ Request::is('/') ? 'active' : '' }}">
+                            <a href="{{ route('index') }}">
                                 <i class="fas fa-table"></i>Draft a Quote
                             </a>
                         </li>
-                        <li>
-                            <a href="add-quote.html">
+                        <li class="{{ Request::is('pending-quotes') ? 'active' : '' }}">
+                            <a href="{{ route('pendingQuotes') }}">
                                 <i class="fas fa-copy"></i>Pending Quotes
                             </a>
                         </li>
                         <li>
-                            <a href="add-quote.html">
+                            <a href="{{ route('index') }}">
                                 <i class="far fa-check-square"></i>Approved Quotes
                             </a>
                         </li>
@@ -174,6 +177,8 @@
     <script src="{{ asset('js/main.js') }}"></script>
     <!-- Calculate JS-->
     <script src="{{ asset('js/calculate-amount.js') }}"></script>
+    <script src="{{ asset('https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js') }}"></script>
 
 </body>
 </html>
