@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('content')
     
+    @if($quote->status == '0')
     <div class="row">
         <div class="col-md-12">
             <div class="overview-wrap">
@@ -11,6 +12,7 @@
             </div>
         </div>
     </div>
+    @endif
 
     <div class="row m-t-25">
         <div class="col-lg-12">
@@ -91,22 +93,22 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <textarea name="address_1" id="address_1" rows="1" placeholder="Address line 1" class="form-control address_1">{{ $quote->address_1 }}</textarea>
+                                    <textarea name="address_1" id="address_1" rows="1" placeholder="Address line 1" class="form-control address_1" readonly>{{ $quote->address_1 }}</textarea>
                                 </div> 
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <textarea name="address_2" id="address_2" rows="1" placeholder="Address line 2" class="form-control address_2">{{ $quote->address_2 }}</textarea>
+                                    <textarea name="address_2" id="address_2" rows="1" placeholder="Address line 2" class="form-control address_2" readonly>{{ $quote->address_2 }}</textarea>
                                 </div>  
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
-                                    <input name="city" type="text" class="form-control city" value="{{ $quote->city }}">
+                                    <input name="city" type="text" class="form-control city" value="{{ $quote->city }}" readonly>
                                 </div> 
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
-                                <input name="post_code" type="text" class="form-control post_code" value="{{ $quote->post_code }}">
+                                <input name="post_code" type="text" class="form-control post_code" value="{{ $quote->post_code }}" readonly>
                                 </div>  
                             </div>
                         </div>
@@ -116,7 +118,7 @@
                             <thead>
                                 <tr>
                                     <th scope="col">Item</th>
-                                    <th scope="col">Description</th>
+                                    <th scope="col" style="width: 385px;">Description</th>
                                     <th scope="col">Qty</th>
                                     <th scope="col">Unit Price</th>
                                     <th scope="col">Sub Total</th>
@@ -129,7 +131,7 @@
                                         <input name="item_name[]" type="text" class="form-control item_name" value="{{ $qi->name }}" readonly>
                                     </td>
                                     <td data-label="Description">
-                                        <textarea name="description[]" rows="3" class="form-control description" readonly>{{ $qi->description }}</textarea>
+                                        <textarea name="description[]" rows="1" class="form-control description" readonly>{{ $qi->description }}</textarea>
                                     </td>
                                     <td data-label="Qty">
                                         <input name="qty[]" type="number" class="form-control qty calc" value="1" min="1" value="{{ $qi->qty }}" readonly>
@@ -207,19 +209,81 @@
                             </div>
                         </div>
 
-                        <div class="row mt-2">
+                        @if($quote->status == '2') 
+
+                        <div class="row">
                             <div class="col-md-12">
-                                <p class="float-md-right">
-                                    <button id="payment-button" type="submit" class="btn btn-lg btn-warning btn-block" name="submitbutton" value="2">
+                                <div class="form-group">
+                                    <label for="reject_reason" class="control-label mb-1">Reason for Rejecting </label>
+                                    <textarea name="reject_reason" id="reject_reason" rows="3" class="form-control reject_reason">{{ $quote->reject_reason }}</textarea>
+                                </div> 
+                            </div>
+                        </div>
+
+                        @endif
+
+                        @if($quote->status == '0') 
+                        <div class="row mb-4">
+
+                            <!-- <div class="col-md-12 mb-3">
+                                <h3 class="text-md-left pb-4">Please Choose your Design</h3>
+                            </div>-->
+
+                            <div class="col-md-12">
+                                
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="quote_option" id="approve" value="approve">
+                                    <label class="form-check-label">Approve this Quote</label>
+                                </div>
+
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="quote_option" id="reject" value="reject">
+                                    <label class="form-check-label">Reject this Quote</label>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                                                  
+                        <div id="quote_reject" class="row hide" style="display: none;">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="reject_reason" class="control-label mb-1">Reason for Rejecting </label>
+                                    <textarea name="reject_reason" id="reject_reason" rows="3" placeholder="" class="form-control reject_reason"></textarea>
+                                </div> 
+                            </div>
+                            <div class="col-md-12">
+                                <p class="float-md-left">
+                                    <button id="payment-button" type="submit" class="btn btn-lg btn-warning btn-block reject_btn" name="submitbutton" value="2">
                                         <i class="fa fa-bolt fa-lg"></i>&nbsp;
                                         <span id="payment-button-amount">Reject</span>
                                     </button>
                                 </p>
-                                <p class="float-md-right  mr-2">
+                            </div>
+                        </div>
+
+                        <div id="quote_approve" class="row hide" style="display: none;">
+                            <div class="col-md-12">
+                                <p class="float-md-left mr-2">
                                     <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block" name="submitbutton" value="1">
                                         <i class="fa fa-refresh fa-lg"></i>&nbsp;
                                         <span id="payment-button-amount">Approve</span>
                                     </button>
+                                </p>
+                            </div>
+                        </div>
+                        @endif
+
+                        <?php 
+                            if($quote->status == '0'){ $back = route('index'); } 
+                            else if($quote->status == '1'){ $back = route('approvedQuotes'); } 
+                            else if($quote->status == '2'){ $back = route('rejectedQuotes'); } 
+                        ?>
+                        <div class="row mt-2">
+                            <div class="col-md-12">
+                                <p class="float-md-right  mr-2">
+                                    <a href="{{ $back }}" class="btn btn-lg btn-info btn-block">Back</a>
                                 </p>                                
                             </div>
                         </div>

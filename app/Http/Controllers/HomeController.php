@@ -6,14 +6,23 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    // public function index()
-    // {
-    //     return view('index');
-    // }
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
-    // public function pendingQuotes()
-    // {
-    //     $quotes = Quote::orderBy('title','desc')->get();
-    //     return view('pending-quotes')->with('posts', $quotes);
-    // }
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        return view('home');
+    }
 }

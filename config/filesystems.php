@@ -62,6 +62,11 @@ return [
             'region' => env('AWS_REGION'),
             'bucket' => env('AWS_BUCKET'),
         ],
+        /* this creates "quote_pdf" folder in public folder */
+        'quote_pdf' => [
+            'driver' => 'local',
+            'root'   => public_path() . '/quote_pdf',
+        ],
 
     ],
 

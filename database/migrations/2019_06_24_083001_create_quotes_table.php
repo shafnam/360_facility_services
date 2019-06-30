@@ -28,7 +28,8 @@ class CreateQuotesTable extends Migration
             $table->decimal('total', 10, 2);
             $table->mediumText('comment');
             $table->date('expiry_date'); 
-            $table->tinyInteger('status');       
+            $table->tinyInteger('status');    
+            $table->mediumText('reject_reason');   
             $table->timestamps();
         });
     }

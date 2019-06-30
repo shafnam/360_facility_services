@@ -75,9 +75,14 @@
                                 <i class="fas fa-table"></i>Draft a Quote
                             </a>
                         </li>
-                        <li>
-                            <a href="{{ route('index') }}">
+                        <li class="{{ Request::is('approved-quotes') ? 'active' : '' }}">
+                            <a href="{{ route('approvedQuotes') }}">
                                 <i class="far fa-check-square"></i>Approved Quotes
+                            </a>
+                        </li>
+                        <li class="{{ Request::is('rejected-quotes') ? 'active' : '' }}">
+                            <a href="{{ route('rejectedQuotes') }}">
+                                <i class="fa fa-times"></i>Rejected Quotes
                             </a>
                         </li>
                     </ul>
@@ -106,9 +111,14 @@
                                 <i class="fas fa-table"></i>Draft a Quote
                             </a>
                         </li>
-                        <li>
-                            <a href="{{ route('index') }}">
+                        <li class="{{ Request::is('approved-quotes') ? 'active' : '' }}">
+                            <a href="{{ route('approvedQuotes') }}">
                                 <i class="far fa-check-square"></i>Approved Quotes
+                            </a>
+                        </li>
+                        <li class="{{ Request::is('rejected-quotes') ? 'active' : '' }}">
+                            <a href="{{ route('rejectedQuotes') }}">
+                                <i class="fa fa-times"></i>Rejected Quotes
                             </a>
                         </li>
                     </ul>
@@ -119,7 +129,107 @@
 
         <!-- PAGE CONTAINER-->
         <div class="page-container">
-            <div class="main-content">
+		
+			<!-- HEADER DESKTOP-->
+            <header class="header-desktop">
+                <div class="section__content section__content--p30">
+                    <div class="container-fluid">
+                        <div class="header-wrap pull-right" style="width: 200px;">
+                            
+                            <div class="header-button">
+                                @if (Auth::guest())
+                                    <div class="noti-wrap">
+                                        <div class="noti__item js-item-menus">
+                                            <a href="{{ route('login') }}"><i class="zmdi zmdi-comment-more"></i></a>
+                                            <!-- <span class="quantity">1</span>
+                                            <div class="mess-dropdown js-dropdown">
+                                                <div class="mess__title">
+                                                    <p>You have 2 news message</p>
+                                                </div>
+                                                <div class="mess__item">
+                                                    <div class="image img-cir img-40">
+                                                        <img src="images/icon/avatar-06.jpg" alt="Michelle Moreno">
+                                                    </div>
+                                                    <div class="content">
+                                                        <h6>Michelle Moreno</h6>
+                                                        <p>Have sent a photo</p>
+                                                        <span class="time">3 min ago</span>
+                                                    </div>
+                                                </div>
+                                                <div class="mess__item">
+                                                    <div class="image img-cir img-40">
+                                                        <img src="images/icon/avatar-04.jpg" alt="Diane Myers">
+                                                    </div>
+                                                    <div class="content">
+                                                        <h6>Diane Myers</h6>
+                                                        <p>You are now connected on message</p>
+                                                        <span class="time">Yesterday</span>
+                                                    </div>
+                                                </div>
+                                                <div class="mess__footer">
+                                                    <a href="#">View all messages</a>
+                                                </div>
+                                            </div> -->
+                                        </div>                               
+                                    </div>
+								@else
+                                <div class="account-wrap">
+                                    <div class="account-item clearfix js-item-menu">
+                                        <div class="image">
+                                            <img src="{{ URL::asset('/images/icon/avatar-01.jpg') }}" alt="John Doe" />
+                                        </div>
+                                        <div class="content">
+                                            <a class="js-acc-btn" href="#">{{ Auth::user()->name }}</a>
+                                        </div>
+                                        <div class="account-dropdown js-dropdown">
+                                            <div class="info clearfix">
+                                                <div class="image">
+                                                    <a href="#">
+                                                        <img src="/images/icon/avatar-01.jpg" alt="John Doe" />
+                                                    </a>
+                                                </div>
+                                                <div class="content">
+                                                    <h5 class="name">
+                                                        <a href="#">{{ Auth::user()->name }}</a>
+                                                    </h5>
+                                                    <span class="email">{{ Auth::user()->email }}</span>
+                                                </div>
+                                            </div>
+                                            <!-- <div class="account-dropdown__body">
+                                                <div class="account-dropdown__item">
+                                                    <a href="#">
+                                                        <i class="zmdi zmdi-account"></i>Account</a>
+                                                </div>
+                                                <div class="account-dropdown__item">
+                                                    <a href="#">
+                                                        <i class="zmdi zmdi-settings"></i>Setting</a>
+                                                </div>
+                                                <div class="account-dropdown__item">
+                                                    <a href="#">
+                                                        <i class="zmdi zmdi-money-box"></i>Billing</a>
+                                                </div>
+                                            </div> -->
+                                            <div class="account-dropdown__footer">
+                                                <a href="{{ route('logout') }}"
+                                            onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                                    <i class="zmdi zmdi-power"></i>Logout</a>
+                                            </div>
+											<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+												{{ csrf_field() }}
+											</form>
+                                        </div>
+                                    </div>
+                                </div>
+								@endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- END HEADER DESKTOP-->
+			
+            <div class="main-content  main-content--pb30">
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                         @yield('content')

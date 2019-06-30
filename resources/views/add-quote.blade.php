@@ -241,7 +241,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="upload_file" class="control-label mb-1">Upload Images</label>
+                                    <label for="upload_file" class="control-label mb-1">Upload Images (Each image size should be less than 1MB)</label>
                                     <input type="file" class="form-control" id="upload_file" name="upload_file[]" placeholder="upload images here" style="height: 45px;" multiple>
                                 </div> 
                             </div>

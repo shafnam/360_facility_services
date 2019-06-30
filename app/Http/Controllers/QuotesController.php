@@ -6,9 +6,23 @@ use Illuminate\Http\Request;
 use App\Quote;
 use App\QuoteItem;
 use App\QuotePhoto;
+use Mail;
+use App\Mail\SendQuoteMail;
+use PDF;
+use Illuminate\Support\Facades\Storage;
 
 class QuotesController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -24,6 +38,18 @@ class QuotesController extends Controller
     public function addQuote()
     {
         return view('add-quote');
+    }
+
+    public function approvedQuotes()
+    {
+        $quotes = Quote::orderBy('quote_number','desc')->where('status','1')->get();
+        return view('approved-quotes')->with('quotes', $quotes);
+    }
+
+    public function rejectedQuotes()
+    {
+        $quotes = Quote::orderBy('quote_number','desc')->where('status','2')->get();
+        return view('rejected-quotes')->with('quotes', $quotes);
     }
 
     /**
@@ -47,11 +73,11 @@ class QuotesController extends Controller
         $this->validate($request, [
             'c_name' => 'required',
             'c_email' => 'required',
-            'c_contact' => 'required|regex:/(0)[0-9]{9}/',
+            'c_contact' => 'required',
             'address_1' => 'required',
             'city' => 'required',
             'post_code' => 'required',
-            'expiry_date' => 'required',
+            //'expiry_date' => 'required',
 
             'description.0' => 'required',
             'description.1' => 'required',
@@ -73,7 +99,8 @@ class QuotesController extends Controller
             'grand_total' => 'required',
             'tax' => 'required',
             'total' => 'required',
-            'upload_file' => 'max:999|nullable'
+            //'upload_file' => 'max:999|nullable'
+            'upload_file.*' => 'image|mimes:jpeg,png,jpg,gif|max:1999'
             //'cover_image' => 'image|nullable|max:1999'
         ]);
 
@@ -159,7 +186,7 @@ class QuotesController extends Controller
         $quote_items =  QuoteItem::where('quote_id', $id)->get();
         $quote_pictures =  QuotePhoto::where('quote_id', $id)->get();
         
-        //Check if quote exists before deleting
+        //Check if quote exists before editing
         if (!isset($quote)){
             return redirect('/pending-quotes')->with('error', 'No Quote Found');
         }
@@ -181,18 +208,122 @@ class QuotesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Update Quote
+        $items = array(); 
+        $attachments = array();
+        $quote_details = array();
+        
         $quote = Quote::find($id);
 
+        // quote details
+        $quote_number = $request->input('quote_number');
+        $c_name = $request->input('c_name');
+        $c_email = $request->input('c_email');
+        $c_contact = $request->input('c_contact');
+        $address_1 = $request->input('address_1');
+        $address_2 = $request->input('address_2');
+        $city = $request->input('city');
+        $post_code = $request->input('post_code');
+        $grand_total = $request->input('grand_total');
+        $tax = $request->input('tax');
+        $total = $request->input('total');
+        $comment = $request->input('comment');
+        $expiry_date = $request->input('expiry_date');       
+
+        // quote item details        
+        $quote_items = $quote->quote_items; //the quote items object
+        // quote images details
+        $quote_photos = $quote->quote_photos; //the quote items object
+
+        //item details array (for email)
+        foreach ($quote_items as $quote_item) {
+            array_push($items, [
+                'item' => $quote_item->name,
+                'description' => $quote_item->description,
+                'qty' => $quote_item->qty,
+                'unit_price' => $quote_item->unit_price,
+                'sub_total' => $quote_item->sub_total
+            ]);           
+        }       
+
         if($request->input('submitbutton') == '1'){
+            // Approved
             $quote->status = '1';
+            $quote->expiry_date = $expiry_date;
             $quote->save();
-            return redirect('/pending-quotes')->with('success', 'Quote approved');
+            
+            // create PDF file
+            $pdf = PDF::loadView('pdf', compact('quote', 'quote_items', 'quote_photos')); 
+            $content = $pdf->download()->getOriginalContent();      
+                  
+            // Store pdf in quote_pdf folder in public folder (new folder created in config/filesystems.php)
+            Storage::disk('quote_pdf')->put($quote_number.'_quote.pdf', $content);
+            //Storage::put('public/pdf/name.pdf',$content) ;
+
+            // pdf location
+            //$file = storage_path('/quote_pdf/'. $quote_number.'_quote.pdf');
+            // $file_path =  public_path().'/quote_pdf/'. $quote_number.'_quote.pdf';
+            // $file_name =  $quote_number.'_quote.pdf';
+            //dd($file);
+
+            // item photos array (for email attachments)
+            foreach ($quote_photos as $quote_photo) {
+                array_push($attachments, [
+                    'file_path' => public_path().'/quote_images/'. $quote_photo->name,
+                    'file_name' => $quote_photo->name
+                ]);           
+            }
+            // foreach ($quote_photos as $quote_photo) {
+            //     array_push($attachments, [
+            //         public_path().'/quote_images/'. $quote_photo->name => [
+            //             'as' => $quote_photo->name,
+            //             'mime' => 'application/pdf',
+            //         ]
+            //     ]);           
+            // }
+            
+            // add PDFattachment details
+            array_push($attachments, [
+                // public_path().'/quote_pdf/'. $quote_number.'_quote.pdf' => [
+                //     'as' => $quote_number.'_quote.pdf',
+                //     'mime' => 'application/pdf',
+                // ]
+                'file_path' =>  public_path().'/quote_pdf/'. $quote_number.'_quote.pdf',
+                'file_name' =>  $quote_number.'_quote.pdf'
+            ]);
+            //dd($attachments);
+
+            $quote_details =  [
+                'quote_number' => $quote_number,
+                'c_name' => $c_name,
+                'c_email' => $c_email,
+                'c_contact' => $c_contact,
+                'address_1' => $address_1,
+                'address_2' => $address_2,
+                'city' => $city,
+                'post_code' => $post_code,
+                'grand_total' => $grand_total,
+                'tax' => $tax,
+                'total' => $total,
+                'expiry_date' => $expiry_date,
+                'items' => $items,
+                'attachments' => $attachments
+                // 'file_path' => $file_path,
+                // 'file_name' => $file_name,
+            ];
+            //dd($quote_details);
+
+            // send email 
+            //Mail::send(new SendQuoteMail());
+            Mail::to($c_email)->send(new SendQuoteMail($quote_details));           
+
+            return redirect('/')->with('success', 'Quote approved');
         }
         else if($request->input('submitbutton') == '2'){
+            // Rejected
             $quote->status = '2';
+            $quote->reject_reason = $request->input('reject_reason');
             $quote->save();
-            return redirect('/pending-quotes')->with('success', 'Quote rejected');
+            return redirect('/')->with('success', 'Quote rejected');
         }
     }
 

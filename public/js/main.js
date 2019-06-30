@@ -1684,4 +1684,22 @@ $(document).ready(function() {
 
 $(document).ready(function() {  
   $("#c_contact").inputmask({"mask": "(999) 999-9999"});
+
+  $('.edit-quote-form input[name="quote_option"]').click(function(){
+		var inputValue = $(this).attr("id");
+		var targetDiv =  "quote_" + inputValue;
+
+		$('.hide').hide();
+    $("#"+ targetDiv).show('slow');
+    
+    /* Make relevent fields required */
+		if ($(this).attr('id') === 'reject'){	
+      $("#reject_reason").attr('required', true);			
+    }else{
+      $("#reject_reason").attr('required', false);			
+    }
+    
+	});
+
+
 });
