@@ -176,7 +176,7 @@
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="image">
-                                            <img src="{{ URL::asset('/images/icon/avatar-01.jpg') }}" alt="John Doe" />
+                                            <img src="{{ URL::asset('/images/icon/user.png') }}" alt="John Doe" />
                                         </div>
                                         <div class="content">
                                             <a class="js-acc-btn" href="#">{{ Auth::user()->name }}</a>

@@ -101,6 +101,16 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+
+        'qty' => [
+            'check_array' => 'At least one item is required for the Qty field',
+        ],
+        'description' => [
+            'check_array' => 'At least one item is required for the Desciption field',
+        ],
+        'unit_price' => [
+            'check_array' => 'At least one item is required for the Unit Price field',
+        ],
     ],
 
     /*

@@ -47,8 +47,7 @@
                         <!-- Messages -->
 
                         <div class="col-md-6">
-                            <?php $qn = 157896; ?>
-                            <h3 class="m-2 text-center text-md-left">Quote No: <?php echo $qn; ?></h3>
+                            <h3 class="m-2 text-center text-md-left">Quote No: {{ $quote_number }}</h3>
                         </div>
 
                         <div class="col-md-6 d-none d-sm-block">
@@ -67,25 +66,25 @@
 
                     <form id="add-quote-form" class="pt-4 draft-quote-form" method="POST" action="{{ route('addQuote') }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
-                        <input type="hidden" id="quote_number" name="quote_number" value="157896">
+                        <input type="hidden" id="quote_number" name="quote_number" value="{{ $quote_number }}">
 
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="c_name" class="control-label mb-1">Client Name*</label>
-                                    <input id="c_name" name="c_name" type="text" class="form-control c_name" required>
+                                    <input id="c_name" name="c_name" type="text" class="form-control c_name" value="{{ old('c_name') }}" required>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="c_email" class="control-label mb-1">Client Email*</label>
-                                    <input id="c_email" name="c_email" type="email" class="form-control c_email" required>
+                                    <input id="c_email" name="c_email" type="email" class="form-control c_email" value="{{ old('c_email') }}" required>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="c_contact" class="control-label mb-1">Client Contact Number*</label>
-                                    <input id="c_contact" name="c_contact" class="form-control c_contact" type="text" maxlength="14" placeholder="(XXX) XXX-XXXX" required>
+                                    <input id="c_contact" name="c_contact" class="form-control c_contact" type="text" maxlength="14" placeholder="(XXX) XXX-XXXX" value="{{ old('c_contact') }}" required>
                                 </div>
                             </div>
                         </div>
@@ -95,22 +94,22 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <textarea name="address_1" id="address_1" rows="1" placeholder="Address line 1" class="form-control address_1" required></textarea>
+                                    <textarea name="address_1" id="address_1" rows="1" placeholder="Address line 1" class="form-control address_1" required>{{ old('address_1') }}</textarea>
                                 </div> 
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <textarea name="address_2" id="address_2" rows="1" placeholder="Address line 2" class="form-control address_2"></textarea>
+                                    <textarea name="address_2" id="address_2" rows="1" placeholder="Address line 2" class="form-control address_2">{{ old('address_2') }}</textarea>
                                 </div>  
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
-                                    <input name="city" type="text" class="form-control city" placeholder="City" required>
+                                    <input name="city" type="text" class="form-control city" placeholder="City" value="{{ old('city') }}" required>
                                 </div> 
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
-                                <input name="post_code" type="text" class="form-control post_code" placeholder="Post code" required>
+                                <input name="post_code" type="text" class="form-control post_code" placeholder="Post code" value="{{ old('post_code') }}" required>
                                 </div>  
                             </div>
                         </div>
@@ -132,16 +131,16 @@
                                         <input name="item_name[]" type="text" class="form-control item_name" value="Labour" readonly>
                                     </td>
                                     <td data-label="Description">
-                                        <textarea name="description[]" rows="3" placeholder="..." class="form-control description"></textarea>
+                                        <textarea name="description[]" rows="3" placeholder="" class="form-control description">{{ old('description.0') }}</textarea>
                                     </td>
                                     <td data-label="Qty">
-                                        <input name="qty[]" type="number" class="form-control qty calc" value="1" min="1">
+                                        <input name="qty[]" type="number" class="form-control qty calc" value="{{ old('qty.0') }}" min="0">
                                     </td>
                                     <td data-label="Unit Price">
-                                        <input name="unit_price[]" type="number" class="form-control unit_price calc" step="any" required>
+                                        <input name="unit_price[]" type="number" class="form-control unit_price calc" value="{{ old('unit_price.0') }}" step="any">
                                     </td>
                                     <td data-label="Total">
-                                        <input name="sub_total[]" type="number" class="form-control sub_total" step="any" readonly>
+                                        <input name="sub_total[]" type="number" class="form-control sub_total" step="any" value="{{ old('sub_total.0') }}" readonly>
                                     </td>
                                 </tr>
                                 <tr>
@@ -149,16 +148,16 @@
                                         <input name="item_name[]" type="text" class="form-control item_name" value="Callout Fee" readonly>
                                     </td>
                                     <td data-label="Description">
-                                        <textarea name="description[]" rows="3" placeholder="..." class="form-control description"></textarea>
+                                        <textarea name="description[]" rows="3" placeholder="" class="form-control description">{{ old('description.1') }}</textarea>
                                     </td>
                                     <td data-label="Qty">
-                                        <input name="qty[]" type="number" class="form-control qty calc" value="1" min="1">
+                                        <input name="qty[]" type="number" class="form-control qty calc" value="{{ old('qty.1') }}" min="0">
                                     </td>
                                     <td data-label="Unit Price">
-                                        <input name="unit_price[]" type="number" class="form-control unit_price calc" step="any" required>
+                                        <input name="unit_price[]" type="number" class="form-control unit_price calc" value="{{ old('unit_price.1') }}" step="any">
                                     </td>
                                     <td data-label="Total">
-                                        <input name="sub_total[]" type="number" class="form-control sub_total" step="any" readonly>
+                                        <input name="sub_total[]" type="number" class="form-control sub_total" step="any" value="{{ old('sub_total.1') }}" readonly>
                                     </td>
                                 </tr>
                                 <tr>
@@ -166,16 +165,16 @@
                                         <input name="item_name[]" type="text" class="form-control item_name" value="Equipment" readonly>
                                     </td>
                                     <td data-label="Description">
-                                        <textarea name="description[]" rows="3" placeholder="..." class="form-control description"></textarea>
+                                        <textarea name="description[]" rows="3" placeholder="" class="form-control description">{{ old('description.2') }}</textarea>
                                     </td>
                                     <td data-label="Qty">
-                                        <input name="qty[]" type="number" class="form-control qty calc" value="1" min="1" required>
+                                        <input name="qty[]" type="number" class="form-control qty calc" value="{{ old('qty.2') }}" min="0">
                                     </td>
                                     <td data-label="Unit Price">
-                                        <input name="unit_price[]" type="number" class="form-control unit_price calc" step="any">
+                                        <input name="unit_price[]" type="number" class="form-control unit_price calc" value="{{ old('unit_price.2') }}" step="any">
                                     </td>
                                     <td data-label="Total">
-                                        <input name="sub_total[]" type="number" class="form-control sub_total" step="any" readonly>
+                                        <input name="sub_total[]" type="number" class="form-control sub_total" step="any" value="{{ old('sub_total.2') }}" readonly>
                                     </td>
                                 </tr>
                                 <tr>
@@ -183,16 +182,16 @@
                                         <input name="item_name[]" type="text" class="form-control item_name" value="Travel" readonly>
                                     </td>
                                     <td data-label="Description">
-                                        <textarea name="description[]" rows="3" placeholder="..." class="form-control description"></textarea>
+                                        <textarea name="description[]" rows="3" placeholder="" class="form-control description">{{ old('description.3') }}</textarea>
                                     </td>
                                     <td data-label="Qty">
-                                        <input name="qty[]" type="number" class="form-control qty calc" value="1" min="1">
+                                        <input name="qty[]" type="number" class="form-control qty calc" value="{{ old('qty.3') }}" min="0">
                                     </td>
                                     <td data-label="Unit Price">
-                                        <input name="unit_price[]" type="number" class="form-control unit_price calc" step="any" required>
+                                        <input name="unit_price[]" type="number" class="form-control unit_price calc" value="{{ old('unit_price.3') }}" step="any">
                                     </td>
                                     <td data-label="Total">
-                                        <input name="sub_total[]" type="number" class="form-control sub_total" step="any" readonly >
+                                        <input name="sub_total[]" type="number" class="form-control sub_total" step="any" value="{{ old('sub_total.3') }}" readonly >
                                     </td>
                                 </tr>
                                 <tr>
@@ -200,16 +199,16 @@
                                         <input name="item_name[]" type="text" class="form-control item_name" value="Other" readonly>
                                     </td>
                                     <td data-label="Description">
-                                        <textarea name="description[]" rows="3" placeholder="..." class="form-control description"></textarea>
+                                        <textarea name="description[]" rows="3" placeholder="" class="form-control description">{{ old('description.4') }}</textarea>
                                     </td>
                                     <td data-label="Qty">
-                                        <input name="qty[]" type="number" class="form-control qty calc" value="1" min="1">
+                                        <input name="qty[]" type="number" class="form-control qty calc" value="{{ old('qty.4') }}" min="0">
                                     </td>
                                     <td data-label="Unit Price">
-                                        <input name="unit_price[]" type="number" class="form-control unit_price calc" step="any" >
+                                        <input name="unit_price[]" type="number" class="form-control unit_price calc" value="{{ old('unit_price.4') }}" step="any" >
                                     </td>
                                     <td data-label="Total">
-                                        <input name="sub_total[]" type="number" class="form-control sub_total" step="any" readonly >
+                                        <input name="sub_total[]" type="number" class="form-control sub_total" step="any" value="{{ old('sub_total.4') }}" readonly >
                                     </td>
                                 </tr>
                                 <tr>
@@ -254,13 +253,13 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="comment" class="control-label mb-1">Note</label>
-                                    <textarea name="comment" id="comment" rows="3" placeholder="" class="form-control comment"></textarea>
+                                    <textarea name="comment" id="comment" rows="3" placeholder="" class="form-control comment">{{ old('comment') }}</textarea>
                                 </div> 
                             </div>
                             <div class="col-md-12">
                                 <?php 
-                                    $today = date("Y-m-d"); 
-                                    $twoWeeksFromNow = date( "Y-m-d", strtotime( "$today +2 week" ) );
+                                    $today = date("d-m-Y"); 
+                                    $twoWeeksFromNow = date( "d-m-Y", strtotime( "$today +2 week" ) );
                                 ?>
                                 <div class="form-group">
                                     <label for="draft_date" class="control-label mb-1">Drafted on</label>

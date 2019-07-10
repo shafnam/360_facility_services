@@ -10,6 +10,7 @@ use Mail;
 use App\Mail\SendQuoteMail;
 use PDF;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class QuotesController extends Controller
 {
@@ -37,7 +38,10 @@ class QuotesController extends Controller
 
     public function addQuote()
     {
-        return view('add-quote');
+        $quote_number = Quote::count() + 1001;
+        $quote_number = 'Q' . $quote_number;
+        // dd($quote_number);
+        return view('add-quote')->with('quote_number', $quote_number);
     }
 
     public function approvedQuotes()
@@ -70,39 +74,53 @@ class QuotesController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $validate_these = [
             'c_name' => 'required',
             'c_email' => 'required',
             'c_contact' => 'required',
             'address_1' => 'required',
             'city' => 'required',
             'post_code' => 'required',
-            //'expiry_date' => 'required',
-
-            'description.0' => 'required',
-            'description.1' => 'required',
-            'description.2' => 'required',
-            'description.3' => 'required',
-
-            'unit_price.0' => 'required',
-            'unit_price.1' => 'required',
-            'unit_price.2' => 'required',
-            'unit_price.3' => 'required',
-
-            'sub_total.0' => 'required',
-            'sub_total.1' => 'required',
-            'sub_total.2' => 'required',
-            'sub_total.3' => 'required',
-            //'description' => 'required|array',
-            //'unit_price' => 'required|array',
-            //'sub_total' => 'required|array',
             'grand_total' => 'required',
             'tax' => 'required',
             'total' => 'required',
             //'upload_file' => 'max:999|nullable'
             'upload_file.*' => 'image|mimes:jpeg,png,jpg,gif|max:1999'
-            //'cover_image' => 'image|nullable|max:1999'
-        ]);
+        ];
+
+        if( !array_filter($request->input('qty')) ) {
+            // Should fill atleast one item 
+            $validate_these['qty'] = 'check_array:1';
+            $validate_these['unit_price'] = 'check_array:1';
+            $validate_these['description'] = 'check_array:1';            
+        } 
+        else {
+            // If either any field is filled in a row should fill all other colomns in the same row
+            for ($i = 0; $i < count($request->input('qty')); $i++) {
+                if($request->qty[$i] != null) {
+                    $validate_these['unit_price.' .$i] = 'required';
+                    $validate_these['description.' .$i] = 'required';
+                }
+                if($request->description[$i] != null) {
+                    $validate_these['unit_price.' .$i] = 'required';
+                    $validate_these['qty.' .$i] = 'required';
+                }
+                if($request->unit_price[$i] != null) {
+                    $validate_these['qty.' .$i] = 'required';
+                    $validate_these['description.' .$i] = 'required';
+                }
+            }
+        }
+
+        //dd($validate_these);
+        
+        $validator = Validator::make($request->all(),$validate_these);
+
+        if ($validator->fails()) {
+            return redirect('/add-quote')->withErrors($validator)->withInput();
+        }
+
+        $draft_date = date("Y-m-d", strtotime($request->input('draft_date')));  
 
         // Create Quote
         $quote = new Quote;
@@ -118,20 +136,22 @@ class QuotesController extends Controller
         $quote->tax = $request->input('tax');
         $quote->total = $request->input('total');
         $quote->comment = $request->input('comment');
-        $quote->draft_date = $request->input('draft_date');
+        $quote->draft_date = $draft_date;
         $quote->status = '0';
         $quote->save();
 
         // Create Quote Items 
         for ($i = 0; $i < count($request->input('qty')); $i++) {
-            $QuoteItem = new QuoteItem();
-            $QuoteItem->name = $request->item_name[$i];
-            $QuoteItem->description = $request->description[$i]; 
-            $QuoteItem->qty = $request->qty[$i];
-            $QuoteItem->unit_price = $request->unit_price[$i];
-            $QuoteItem->sub_total = $request->sub_total[$i];
-            //Save one to many relationship
-            $quote->quote_items()->save($QuoteItem); 
+            if($request->qty[$i] != null) {
+                $QuoteItem = new QuoteItem();
+                $QuoteItem->name = $request->item_name[$i];
+                $QuoteItem->description = $request->description[$i]; 
+                $QuoteItem->qty = $request->qty[$i];
+                $QuoteItem->unit_price = $request->unit_price[$i];
+                $QuoteItem->sub_total = $request->sub_total[$i];
+                //Save one to many relationship
+                $quote->quote_items()->save($QuoteItem); 
+            }
         }
 
         // Handle File Upload
@@ -208,6 +228,8 @@ class QuotesController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //dd($request->input('submitbutton'));
+
         $items = array(); 
         $attachments = array();
         $quote_details = array();
@@ -227,7 +249,8 @@ class QuotesController extends Controller
         $tax = $request->input('tax');
         $total = $request->input('total');
         $comment = $request->input('comment');
-        $expiry_date = $request->input('expiry_date');       
+        $expiry_date = date("Y-m-d", strtotime($request->input('expiry_date'))); 
+        //$expiry_date = $request->input('expiry_date');       
 
         // quote item details        
         $quote_items = $quote->quote_items; //the quote items object
@@ -314,7 +337,7 @@ class QuotesController extends Controller
 
             // send email 
             //Mail::send(new SendQuoteMail());
-            Mail::to($c_email)->send(new SendQuoteMail($quote_details));           
+            //Mail::to($c_email)->send(new SendQuoteMail($quote_details));           
 
             return redirect('/')->with('success', 'Quote approved');
         }
@@ -324,6 +347,29 @@ class QuotesController extends Controller
             $quote->reject_reason = $request->input('reject_reason');
             $quote->save();
             return redirect('/')->with('success', 'Quote rejected');
+        }
+        else if($request->input('submitbutton') == '3'){
+
+            // Change Quote 
+            $quote->grand_total = $grand_total;
+            $quote->tax = $tax;
+            $quote->total = $total;
+            $quote->save();
+
+            // Channge the quote Item values
+            //dd(count($request->input('qty')));
+
+            //dd($request->input('item_id'));
+                    
+            for ($i = 0; $i < count($request->input('qty')); $i++) {                
+                $QuoteItem = QuoteItem::where("id", $request->item_id[$i])->first();
+                $QuoteItem->qty = $request->qty[$i];
+                $QuoteItem->unit_price = $request->unit_price[$i]; 
+                $QuoteItem->sub_total = $request->sub_total[$i];                    
+                $QuoteItem->save();
+            }
+            
+            return redirect(route('editQuote', array('id' => $id)))->with('success', 'Quote Updated');
         }
     }
 

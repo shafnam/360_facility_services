@@ -51,11 +51,11 @@
             <div class="container">
                 <div class="login-wrap">
                     <div class="login-content">
-                        <!-- <div class="login-logo">
+                        <div class="login-logo">
                             <a href="#">
-                                <img src="images/icon/logo.png" alt="CoolAdmin">
+                                <img src="{{ URL::asset('/images/360-logo.png') }}" alt="360 Degrees">
                             </a>
-                        </div> -->
+                        </div>
                         <div class="login-form">
                             <form action="" method="POST" action="{{ route('login') }}">
                             {{ csrf_field() }}
@@ -77,28 +77,8 @@
                                         </span>
                                     @endif
                                 </div>
-                                <div class="login-checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>Remember Me
-                                    </label>
-                                    <!-- <label>
-                                        <a href="#">Forgotten Password?</a>
-                                    </label> -->
-                                </div>
-                                <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">sign in</button>
-                                <!-- <div class="social-login-content">
-                                    <div class="social-button">
-                                        <button class="au-btn au-btn--block au-btn--blue m-b-20">sign in with facebook</button>
-                                        <button class="au-btn au-btn--block au-btn--blue2">sign in with twitter</button>
-                                    </div>
-                                </div> -->
+                                <button class="au-btn au-btn--block au-btn--blue m-b-20" type="submit">sign in</button>                                
                             </form>
-                            <!-- <div class="register-link">
-                                <p>
-                                    Don't you have account?
-                                    <a href="#">Sign Up Here</a>
-                                </p>
-                            </div> -->
                         </div>
                     </div>
                 </div>

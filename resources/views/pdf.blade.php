@@ -21,9 +21,15 @@
         table {
             font-size: x-small;
         }
+        .invoice table {
+            border: 1px solid #efefef;
+        }        
         tfoot tr td {
             font-weight: bold;
             font-size: x-small;
+        }
+        .invoice, .invoice table {
+            padding: 10px;
         }
         .invoice table {
             margin: 15px;
@@ -32,8 +38,9 @@
             margin-left: 15px;
         }
         .information {
-            background-color: #60A7A6;
-            color: #FFF;
+            background-color: #fff;
+            color: #000;
+            /*border-bottom: 4px solid #3b74ba;*/
         }
         .information .logo {
             margin: 5px;
@@ -57,7 +64,10 @@
                     {{ $quote->address_1 }} {{ $quote->address_2 }}<br />
                     {{ $quote->city }} {{ $quote->post_code }}<br />
                     <br /><br />
-                    Expiry Date: {{ $quote->expiry_date }}<br />
+                    <?php
+                        $expiry_date = date( "d-m-Y", strtotime( $quote->expiry_date ) );
+                    ?>
+                    Expiry Date: {{ $expiry_date }}<br />
                     Quote Number: {{ $quote->quote_number }}
                 </p>
             </td>
@@ -69,6 +79,8 @@
                 <h3>360 Degrees Facility Services</h3>
                 <pre>
                     <a href="https://360degreesfs.com.au">360degreesfs.com.au</a>
+                    E: admin@360degreesfs.com.au<br/> 
+                    P: (08) 8362 3100<br/> 
                     3/20 Fullarton Road, 
                     Norwood S.A 5067
                 </pre>
@@ -82,9 +94,7 @@
 
 <div class="invoice">
     
-    <!-- <h3>Quote No: {{$quote->quote_number}}</h3> -->
-
-    <table width="75%" style="margin: 0 auto;">
+    <table width="100%" style="margin: 0 auto;">
         <thead style="background: #efefef;">
             <tr>
                 <th>Item</th>
@@ -106,9 +116,9 @@
             @endforeach            
         </tbody>
         <tfoot>
-            <tr>
+            <!-- <tr>
                 <td colspan="5"></td>
-            </td>
+            </tr> -->
             <tr>
                 <td colspan="3"></td>
                 <td align="left">Grand Total ($)</td>

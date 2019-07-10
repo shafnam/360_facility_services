@@ -114,7 +114,7 @@
                         </div>
 
                         <!-- Table-->                        
-                        <table id="orderTable" class="my-5">
+                        <table id="orderTable" class="mt-5">
                             <thead>
                                 <tr>
                                     <th scope="col">Item</th>
@@ -127,6 +127,7 @@
                             <tbody>
                                 @foreach ($quote_items as $qi)   
                                 <tr>
+                                    <input type="hidden" name="item_id[]" value="{{ $qi->id }}">
                                     <td data-label="Item">
                                         <input name="item_name[]" type="text" class="form-control item_name" value="{{ $qi->name }}" readonly>
                                     </td>
@@ -134,7 +135,7 @@
                                         <textarea name="description[]" rows="1" class="form-control description" readonly>{{ $qi->description }}</textarea>
                                     </td>
                                     <td data-label="Qty">
-                                        <input name="qty[]" type="number" class="form-control qty calc" value="1" min="1" value="{{ $qi->qty }}" readonly>
+                                        <input name="qty[]" type="number" class="form-control qty calc" min="1" value="{{ $qi->qty }}" readonly>
                                     </td>
                                     <td data-label="Unit Price">
                                         <input name="unit_price[]" type="number" class="form-control unit_price calc" step="any" value="{{ $qi->unit_price }}" readonly>
@@ -171,24 +172,29 @@
                         </table>
                         <!-- Table-->
 
+                        <div class="row mt-2">
+                            <div class="col-md-12">
+                                <p class="float-md-right mr-2 mt-4">
+                                    <button id="changes-button" type="button" class="btn btn-sm btn-dark btn-block">Make Changes to Items</button>
+                                    <button id="changes-save-button" type="submit" class="btn btn-sm btn-success btn-block" name="submitbutton" value="3">Save Changes</button>
+                                </p>                                
+                            </div>
+                        </div>
+
+                        @if(count($quote_pictures)>0)
                         <div class="row">
-                            <!-- <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="upload_file" class="control-label mb-1">Upload Images</label>
-                                    <input type="file" class="form-control" id="upload_file" name="upload_file[]" placeholder="upload images here" multiple required>
-                                </div> 
-                            </div> -->
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="upload_file" class="control-label mb-1">Images</label>                                    
                                     <div id="image_preview">
-                                    @foreach ($quote_pictures as $qp)     
-                                        <img src="{{ URL::asset('/quote_images/'. $qp->name ) }}">
+                                    @foreach ($quote_pictures as $qp)                                      
+                                        <img src="{{ URL::asset('/quote_images/'. $qp->name ) }}">                                       
                                     @endforeach                                         
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        @endif
 
                         <div class="row">
                             <div class="col-md-12">
@@ -199,12 +205,13 @@
                             </div>
                             <div class="col-md-12">
                                 <?php 
-                                    $today = date("Y-m-d"); 
-                                    $twoWeeksFromNow = date( "Y-m-d", strtotime( "$today +2 week" ) );
+                                    $today = date("d-m-Y"); 
+                                    $oneMonthFromNow = date( "d-m-Y", strtotime( "$today +1 month" ) );
+                                    //$exp_date = date("d-m-Y", strtotime($quote->draft_date));
                                 ?>
                                 <div class="form-group">
                                     <label for="expiry_date" class="control-label mb-1">This quote expires on</label>
-                                    <input id="expiry_date" name="expiry_date" type="text" class="form-control expiry_date" value="<?php echo $twoWeeksFromNow?>" readonly>
+                                    <input id="expiry_date" name="expiry_date" type="text" class="form-control expiry_date" value="<?php echo $oneMonthFromNow?>" readonly>
                                 </div> 
                             </div>
                         </div>
