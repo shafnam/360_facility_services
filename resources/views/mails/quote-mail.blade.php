@@ -22,8 +22,8 @@
       height: 100%;
       margin: 0;
       line-height: 1.4;
-      background-color: #F2F4F6;
-      color: #74787E;
+      background-color: #FFFFFF;
+      color: #000;
       -webkit-text-size-adjust: none;
     }
     
@@ -55,7 +55,7 @@
       -premailer-width: 100%;
       -premailer-cellpadding: 0;
       -premailer-cellspacing: 0;
-      background-color: #F2F4F6;
+      background-color: #FFFFFF;
     }
     
     .email-content {
@@ -78,7 +78,7 @@
     }
     
     .email-masthead_name {
-      font-size: 16px;
+      font-size: 14px;
       font-weight: bold;
       color: #bbbfc3;
       text-decoration: none;
@@ -112,7 +112,7 @@
       width: 750px;
       margin: 0 auto;
       padding: 0;
-      -premailer-width: 750px;
+      -premailer-width: 800px;
       -premailer-cellpadding: 0;
       -premailer-cellspacing: 0;
       text-align: center;
@@ -156,12 +156,12 @@
     /* Attribute list ------------------------------ */
     
     .attributes {
-      margin: 0 0 21px;
+      margin: 0 0 5px;
     }
     
     .attributes_content {
-      background-color: #EDEFF2;
-      padding: 16px;
+      background-color: #FFFFFF;
+      padding: 16px 0;
     }
     
     .attributes_item {
@@ -181,7 +181,7 @@
     .related_item {
       padding: 10px 0;
       color: #74787E;
-      font-size: 15px;
+      font-size: 14px;
       line-height: 18px;
     }
     
@@ -219,7 +219,7 @@
     
     .discount_body {
       text-align: center;
-      font-size: 15px;
+      font-size: 14px;
     }
     /* Social Icons ------------------------------ */
     
@@ -242,7 +242,7 @@
     .purchase {
       width: 100%;
       margin: 0;
-      padding: 35px 0;
+      padding: 0 0 25px;
       -premailer-width: 100%;
       -premailer-cellpadding: 0;
       -premailer-cellspacing: 0;
@@ -259,20 +259,20 @@
     
     .purchase_item {
       padding: 10px 0;
-      color: #74787E;
-      font-size: 15px;
+      color: #000;
+      font-size: 14px;
       line-height: 18px;
     }
     
     .purchase_heading {
       padding-bottom: 8px;
-      border-bottom: 1px solid #EDEFF2;
+      border-bottom: 1px solid #000;
     }
     
     .purchase_heading p {
       margin: 0;
-      color: #9BA2AB;
-      font-size: 12px;
+      color: #000;
+      font-size: 14px;
     }
     
     .purchase_footer {
@@ -285,6 +285,7 @@
       text-align: right;
       font-weight: bold;
       color: #2F3133;
+	  font-size: 14px;
     }
     
     .purchase_total--label {
@@ -303,6 +304,9 @@
     .align-center {
       text-align: center;
     }
+	.font-light{
+		font-weight: 100;
+	}
     /*Media Queries ------------------------------ */
     
     @media only screen and (max-width: 600px) {
@@ -376,8 +380,8 @@
     
     p {
       margin-top: 0;
-      color: #74787E;
-      font-size: 16px;
+      color: #000;
+      font-size: 14px;
       line-height: 1.5em;
       text-align: left;
     }
@@ -407,22 +411,31 @@
             <!-- Email Body -->
             <tr>
               <td class="email-body" width="100%" cellpadding="0" cellspacing="0">
-                <table class="email-body_inner" align="center" width="750" cellpadding="0" cellspacing="0">
+                <table class="email-body_inner" align="center" width="800" cellpadding="0" cellspacing="0">
                   <!-- Body content -->
                   <tr>
                     <td class="content-cell">
-                      <h1>Hi <?php echo $quote['c_name']; ?>,</h1>
-                      <p>Thanks for using 360 Degrees Facility Services. This is the quote you requested. 
-					  Your quote can be viewed, printed and downloaded as PDF from the link below</p>
+                      <h3>Dear <?php echo $quote['c_name']; ?>,</h3>
+                      <p>Thank you for your interest. Your quotation can be viewed, printed and downloaded as PDF from the link below.</p>
                       <table class="attributes" width="100%" cellpadding="0" cellspacing="0">
                         <tr>
                           <td class="attributes_content">
                             <table width="100%" cellpadding="0" cellspacing="0">
                               <tr>
-                                <td class="attributes_item"><strong>Quotation Number:</strong><?php echo $quote['quote_number']; ?></td>
-                              </tr>
-                              <tr>
-                                <td class="attributes_item"><strong>Due By:</strong><?php echo $quote['expiry_date']; ?></td>
+                                <td align="left" class="attributes_item">
+                                  
+                                    <?php echo $quote['c_name']; ?><br>
+                                    <?php echo $quote['c_contact']; ?><br>
+                                    <?php echo $quote['c_email']; ?><br>
+                                    <?php echo $quote['address_1']; ?> <?php echo $quote['address_2']; ?><br>
+                                    <?php echo $quote['city']; ?> <?php echo $quote['post_code']; ?><br>
+                                  
+                                </td>
+                                                <td valign="top" align="right" class="attributes_item">
+                                  <strong>Quotation #</strong><?php echo $quote['quote_number']; ?><br>
+                                  <strong>Estimate Date:</strong><?php echo $quote['draft_date']; ?><br>
+                                  <strong>Expiry Date:</strong><?php echo $quote['expiry_date']; ?>
+                                </td>
                               </tr>
                             </table>
                           </td>
@@ -459,16 +472,16 @@
                             ?>
                               <tr>
                                 <td width="20%" class="purchase_item"><?php echo $item['item']; ?></td>
-                                <td width="20%" class="purchase_item"><?php echo $item['description']; ?></td>
-								<td width="20%" class="purchase_item"><?php echo $item['qty']; ?></td>
-                                <td width="20%" class="purchase_item"><?php echo $item['unit_price']; ?></td>
-								<td width="20%" class="purchase_item align-right" ><?php echo $item['sub_total']; ?></td>
+                                <td width="50%" class="purchase_item"><?php echo $item['description']; ?></td>
+								                <td width="10%" class="purchase_item"><?php echo $item['qty']; ?></td>
+                                <td width="10%" class="purchase_item"><?php echo $item['unit_price']; ?></td>
+								                <td width="10%" class="purchase_item align-right"><?php echo $item['sub_total']; ?></td>
                               </tr>
                             <?php } ?>
 
 							                <tr>
                                 <td colspan="4" width="20%" class="purchase_footer" valign="middle">
-                                  <p class="purchase_total purchase_total--label">Grand Total ($)</p>
+                                  <p class="purchase_total purchase_total--label font-light">Grand Total ($)</p>
                                 </td>
                                 <td width="20%" class="purchase_footer" valign="middle">
                                   <p class="purchase_total"><?php echo $quote['grand_total']; ?></p>
@@ -476,7 +489,7 @@
                               </tr>
 							                <tr>
 								                <td colspan="4" width="20%" class="purchase_footer" valign="middle">
-                                  <p class="purchase_total purchase_total--label">GST Tax (10%)</p>
+                                  <p class="purchase_total purchase_total--label font-light">GST Tax (10%)</p>
                                 </td>
                                 <td width="20%" class="purchase_footer" valign="middle">
                                   <p class="purchase_total"><?php echo $quote['tax']; ?></p>
@@ -495,9 +508,9 @@
                           </td>
                         </tr>
                       </table>
-                      <p>If you have any questions about this quotation, simply reply to this email or reach out to our <a href="https://360degreesfs.com.au/contact-us/">website</a> for help.</p>
-                      <p>Cheers,
-                        <br>The 360 Degrees Facility Services Team
+                      <p>If you have any questions about this quotation, simply reply to this email or call 0449 901 303.</p>
+                      <p>Regards,
+                        <br>The 360 Degrees Facility Services Team.
                       </p>                      
                     </td>
                   </tr>
@@ -509,12 +522,10 @@
                 <table class="email-footer" align="center" width="570" cellpadding="0" cellspacing="0">
                   <tr>
                     <td class="content-cell" align="center">
-                      <p class="sub align-center">&copy; 2019 360 Degrees Facility Services. All rights reserved.</p>
-                      <p class="sub align-center">
-                        360 Degrees Facility Services
-                        <br>3/20 Fullarton Road, 
-                        <br>Norwood S.A 5067
-                      </p>
+                      <p class="sub align-center">&copy; 2019 360 Degrees Facility Services. All rights reserved.<br>
+							3/20 Fullarton Road, 
+							Norwood S.A 5067
+					  </p>
                     </td>
                   </tr>
                 </table>

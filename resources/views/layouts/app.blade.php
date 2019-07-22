@@ -185,7 +185,7 @@
                                             <div class="info clearfix">
                                                 <div class="image">
                                                     <a href="#">
-                                                        <img src="/images/icon/avatar-01.jpg" alt="John Doe" />
+                                                        <img src="{{ URL::asset('/images/icon/user.png') }}" alt="John Doe" />
                                                     </a>
                                                 </div>
                                                 <div class="content">

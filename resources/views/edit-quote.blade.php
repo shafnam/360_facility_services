@@ -171,7 +171,8 @@
                             </tbody>
                         </table>
                         <!-- Table-->
-
+                        
+                        @if($quote->status == '0') 
                         <div class="row mt-2">
                             <div class="col-md-12">
                                 <p class="float-md-right mr-2 mt-4">
@@ -180,6 +181,7 @@
                                 </p>                                
                             </div>
                         </div>
+                        @endif
 
                         @if(count($quote_pictures)>0)
                         <div class="row">
@@ -197,21 +199,23 @@
                         @endif
 
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="comment" class="control-label mb-1">Note </label>
                                     <textarea name="comment" id="comment" rows="3" placeholder="" class="form-control comment" readonly>{{ $quote->comment }}</textarea>
                                 </div> 
                             </div>
-                            <div class="col-md-12">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
                                 <?php 
                                     $today = date("d-m-Y"); 
                                     $oneMonthFromNow = date( "d-m-Y", strtotime( "$today +1 month" ) );
                                     //$exp_date = date("d-m-Y", strtotime($quote->draft_date));
                                 ?>
                                 <div class="form-group">
-                                    <label for="expiry_date" class="control-label mb-1">This quote expires on</label>
-                                    <input id="expiry_date" name="expiry_date" type="text" class="form-control expiry_date" value="<?php echo $oneMonthFromNow?>" readonly>
+                                    <label for="expiry_date" class="control-label mb-1">This quote expires on: <strong><?php echo $oneMonthFromNow?></strong></label>
+                                    <input id="expiry_date" name="expiry_date" type="hidden" class="form-control expiry_date" value="<?php echo $oneMonthFromNow?>">
                                 </div> 
                             </div>
                         </div>

@@ -30,8 +30,8 @@ class SendQuoteMail extends Mailable
     public function build()
     {
         //return $this->view('mails.quote-mail')->to('shafnamikdar@outlook.com');
-        $email =  $this->from('info@360degreesfs.com.au', '360 Facility Services')
-            ->subject('360 Facility Services Quotation')
+        $email =  $this->from('admin@360degreesfs.com.au', '360 Degrees FS')
+            ->subject('Quotation #'. $this->quote['quote_number']. ' | 360 Degrees Facility Services')
             ->cc(['shafnawitel@gmail.com'])
             ->view('mails.quote-mail')
             ->with('quote', $this->quote);
@@ -43,18 +43,8 @@ class SendQuoteMail extends Mailable
                 [
                     'as' => $attachment['file_name'],
                     'mime' => 'application/pdf',
-                    // 'as' => $this->quote['document']->getClientOriginalName(),
-                    // 'mime' => $this->quote['document']->getClientMimeType(),
                 ]);
             }
-            //dd($email);
-            // ->attach($this->quote['file_path'],
-            //     [
-            //         'as' => $this->quote['file_name'],
-            //         'mime' => 'application/pdf',
-            //         // 'as' => $this->quote['document']->getClientOriginalName(),
-            //         // 'mime' => $this->quote['document']->getClientMimeType(),
-            //     ]);
 
         return $email;
     }

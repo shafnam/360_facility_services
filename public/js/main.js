@@ -1671,15 +1671,17 @@
 
 $(document).ready(function() {
   $('#pending').DataTable({
-    "columns": [
-      null,
-      null,
-      null,
+    /*"columns": [
+      { "width": "10%" },
       { "width": "25%" },
-      null,
+      { "width": "20%" },
+      { "width": "25%" },
+      { "width": "10%" },
       { "width": "10%" }
-    ]
+    ]*/
   });
+  $('#approved').DataTable();
+  $('#rejected').DataTable();
 });
 
 $(document).ready(function() {  

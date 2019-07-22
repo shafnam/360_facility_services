@@ -250,6 +250,7 @@ class QuotesController extends Controller
         $total = $request->input('total');
         $comment = $request->input('comment');
         $expiry_date = date("Y-m-d", strtotime($request->input('expiry_date'))); 
+        $draft_date = $quote->draft_date;
         //$expiry_date = $request->input('expiry_date');       
 
         // quote item details        
@@ -328,6 +329,7 @@ class QuotesController extends Controller
                 'tax' => $tax,
                 'total' => $total,
                 'expiry_date' => $expiry_date,
+                'draft_date' => $draft_date,
                 'items' => $items,
                 'attachments' => $attachments
                 // 'file_path' => $file_path,
@@ -337,7 +339,7 @@ class QuotesController extends Controller
 
             // send email 
             //Mail::send(new SendQuoteMail());
-            //Mail::to($c_email)->send(new SendQuoteMail($quote_details));           
+            Mail::to($c_email)->send(new SendQuoteMail($quote_details));           
 
             return redirect('/')->with('success', 'Quote approved');
         }
